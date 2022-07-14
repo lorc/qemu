@@ -1048,7 +1048,7 @@ static void xen_device_realize(DeviceState *dev, Error **errp)
     xen_device_backend_set_online(xendev, true);
     xen_device_backend_set_state(xendev, XenbusStateInitWait);
 
-    if (!xen_device_frontend_exists(xendev)) {
+    if (!xen_device_frontend_exists(xendev) && xenbus->backend_id == 0) {
         xen_device_frontend_printf(xendev, "backend", "%s",
                                    xendev->backend_path);
         xen_device_frontend_printf(xendev, "backend-id", "%u",
