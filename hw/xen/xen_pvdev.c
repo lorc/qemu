@@ -60,7 +60,19 @@ void xen_config_cleanup(void)
 
 int xenstore_mkdir(char *path, int p)
 {
-    if (!qemu_xen_xs_create(xenstore, 0, 0, xen_domid, p, path)) {
+    unsigned int num;
+    struct xs_permissions *tmp;
+    unsigned int owner;
+
+    tmp = xs_get_permissions(xenstore, 0, path, &num);
+    if (tmp == NULL) {
+        xen_pv_printf(NULL, 0, "xs_get_permissions %s: failed\n", path);
+        return -1;
+    }
+    owner = tmp[0].id;
+    free(tmp);
+
+    if (!qemu_xen_xs_create(xenstore, 0, owner, xen_domid, p, path)) {
         xen_pv_printf(NULL, 0, "xs_mkdir %s: failed\n", path);
         return -1;
     }
