@@ -60,7 +60,8 @@ void xen_config_cleanup(void)
 
 int xenstore_mkdir(char *path, int p)
 {
-    if (!qemu_xen_xs_create(xenstore, 0, 0, xen_domid, p, path)) {
+    if (!qemu_xen_xs_create(xenstore, 0, XS_PRESERVE_OWNER,
+                            xen_domid, p, path)) {
         xen_pv_printf(NULL, 0, "xs_mkdir %s: failed\n", path);
         return -1;
     }
