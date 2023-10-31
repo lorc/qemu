@@ -39,7 +39,7 @@
 #include "hw/pci-host/gpex.h"
 #include "hw/virtio/virtio-pci.h"
 
-#define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
+#define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpv")
 OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
 
 static const MemoryListener xen_memory_listener = {
