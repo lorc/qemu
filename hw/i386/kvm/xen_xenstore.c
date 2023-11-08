@@ -1572,6 +1572,24 @@ static bool xs_be_create(struct qemu_xs_handle *h, xs_transaction_t t,
         return false;
     }
 
+    if (owner == XS_PRESERVE_OWNER) {
+        GList *perms;
+        char letter;
+
+        err = xs_impl_get_perms(h->impl, 0, t, path, &perms);
+        if (err) {
+            errno = err;
+            return false;
+        }
+
+        if (sscanf(perms->data, "%c%u", &letter, &owner) != 2) {
+            errno = EFAULT;
+            g_list_free_full(perms, g_free);
+            return false;
+        }
+        g_list_free_full(perms, g_free);
+    }
+
     perms_list = g_list_append(perms_list,
                                xs_perm_as_string(XS_PERM_NONE, owner));
     perms_list = g_list_append(perms_list,

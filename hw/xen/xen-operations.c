@@ -300,6 +300,18 @@ static bool libxenstore_create(struct qemu_xs_handle *h, xs_transaction_t t,
         return false;
     }
 
+    if (owner == XS_PRESERVE_OWNER) {
+        struct xs_permissions *tmp;
+        unsigned int num;
+
+        tmp = xs_get_permissions(h->xsh, 0, path, &num);
+        if (tmp == NULL) {
+            return false;
+        }
+        perms_list[0].id = tmp[0].id;
+        free(tmp);
+    }
+
     return xs_set_permissions(h->xsh, t, path, perms_list,
                               ARRAY_SIZE(perms_list));
 }

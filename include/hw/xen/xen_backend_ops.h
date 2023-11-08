@@ -266,6 +266,8 @@ typedef uint32_t xs_transaction_t;
 #define XS_PERM_READ  0x01
 #define XS_PERM_WRITE 0x02
 
+#define XS_PRESERVE_OWNER        0xFFFE
+
 struct xenstore_backend_ops {
     struct qemu_xs_handle *(*open)(void);
     void (*close)(struct qemu_xs_handle *h);
